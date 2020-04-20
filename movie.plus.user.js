@@ -193,14 +193,13 @@ function get_other_title_en (other_title) {
 
     let title_sub = h1_span[0].textContent.split(title)[1];
     // title_sub = title_sub ? title_sub[0].trim() : '';
-    title_sub = /^[a-zA-Z\d\s\：\:\·]+$/.test(title_sub) ? title_sub : '';
+    title_sub = /^[a-zA-Z\d\s\：\:\·]+$/.test(title_sub) ? title_sub : '';//过滤非英语标题
 
     other_title = other_title ? other_title.split("<br>")[0] : '';
     other_title = other_title ? get_other_title_en(other_title) : '';
     console.log(title, title_sub, other_title);
     // console.log(title.length + title_sub.length);
     // console.log(h1_span[0].textContent.length);
-    // title_sub = (title.length + title_sub.length + 1 >= h1_span[0].textContent.length) ? title_sub : '';//过滤非英语标题
     // title_sub = (title.length + title_sub.length + 1 >= h1_span[0].textContent.length) ? title_sub : '';//过滤非英语标题
 
     let bt_title = title_sub || other_title || title;
