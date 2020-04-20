@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影资源搜索
-// @description    老司机专用，没有那些乱七八糟的资源站，一键BT搜索（BTDig、Torrentz2，需要扶墙），一键字幕直达（字幕库、SubHD、伪射手）
+// @description    老司机专用，一键BT搜索（BTDig、Torrentz2，需要扶墙），一键字幕直达（字幕库、SubHD、伪射手）
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
@@ -154,7 +154,7 @@ function update_sub_site (title, douban_ID, IMDb_ID) {
 function get_other_title_en (other_title) {
   let other_title_en = '';
   other_title.split("/").some((item) => {
-    if (/[a-zA-Z\d]/.test(item)) {
+    if (/^[a-zA-Z\d\s：:·]+$/.test(item)) {
       other_title_en = item;
       return true;
     }
@@ -182,28 +182,26 @@ function get_other_title_en (other_title) {
     $('#content div.aside').prepend(site_bt);
 
 
-    let h1_span = $('#content > h1 > span');
-    let title = h1_span[0].textContent.match(/[\u4e00-\u9fa5\d\s\：\:\·\,\，]+/);
-    title = title ? title[0].trim() : '';
-    // let title_sub = h1_span[0].textContent.match(/[a-zA-Z\d\s\：\:\·]+$/);
-    let year = h1_span[1].textContent.substr(1, 4);
-    let other_title = $('#info').html().split("又名:</span>")[1];
-    let douban_ID = location.href.split('\/')[4] || title;
-    let IMDb_ID = document.querySelector('#info a[href*="://www.imdb.com/"]');
+    let h1_span, title, title_sub, other_title, bt_title, year, douban_ID, IMDb_ID;
 
-    let title_sub = h1_span[0].textContent.split(title)[1];
-    // title_sub = title_sub ? title_sub[0].trim() : '';
-    title_sub = /^[a-zA-Z\d\s\：\:\·]+$/.test(title_sub) ? title_sub : '';//过滤非英语标题
+    h1_span = $('#content > h1 > span');
+
+    title = h1_span[0].textContent.match(/^[\u4e00-\u9fa5\d\s：:·,，]+/);//匹配中文简体
+    title = title ? title[0].trim() : '';
+
+    title_sub = h1_span[0].textContent.split(title)[1];
+    title_sub = /^[a-zA-Z\d\s:·,]+$/.test(title_sub) ? title_sub : '';//过滤非英语
 
     other_title = other_title ? other_title.split("<br>")[0] : '';
     other_title = other_title ? get_other_title_en(other_title) : '';
-    console.log(title, title_sub, other_title);
-    // console.log(title.length + title_sub.length);
-    // console.log(h1_span[0].textContent.length);
-    // title_sub = (title.length + title_sub.length + 1 >= h1_span[0].textContent.length) ? title_sub : '';//过滤非英语标题
 
-    let bt_title = title_sub || other_title || title;
+    console.log('title:' + title, '; title_sub:' + title_sub, '; other_title:' + other_title);
+    bt_title = title_sub || other_title || title;
 
+    year = h1_span[1].textContent.substr(1, 4);
+
+    douban_ID = location.href.split('\/')[4] || title;
+    IMDb_ID = document.querySelector('#info a[href*="://www.imdb.com/"]');
     IMDb_ID = IMDb_ID ? (IMDb_ID.textContent || title) : title;
 
     update_bt_site(bt_title + " " + year);
