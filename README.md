@@ -1,6 +1,12 @@
 ### 绿豆瓣·豆瓣电影资源搜索
 * https://greasyfork.org/zh-CN/scripts/401525
 
+![](./example1.png)
+
+![](./example2.png)
+
+![](./example3.png)
+
 ### 功能介绍
 * 老司机专用
 * 自动解析电影英文名，一键BT搜索，BTDig、Torrentz2，需要扶墙
