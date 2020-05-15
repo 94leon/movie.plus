@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        200422
+// @version        200515
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
