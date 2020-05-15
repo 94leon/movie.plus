@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name           绿豆瓣·豆瓣电影资源搜索
-// @description    老司机专用，一键BT搜索（BTDig、Torrentz2，需要扶墙），一键字幕直达（字幕库、SubHD、伪射手）
+// @name           绿豆瓣·豆瓣电影 资源/字幕 搜索下载
+// @description    老司机专用，一键BT搜索（BTDigg、Torrentz2，需要扶墙），一键字幕直达（字幕库、SubHD、伪射手）
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
