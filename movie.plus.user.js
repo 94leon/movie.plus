@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影 资源/字幕 搜索下载
-// @description    老司机专用；自动解析电影英文名，一键BT搜索，BTDigg、Torrentz2，(这两个网站需要扶墙)；一键字幕直达，字幕库、SubHD、伪射手
+// @description    老司机专用；自动解析电影英文名，一键BT搜索，BTDigg/Torrentz2/SubDH(前两个网站需要扶墙)；一键字幕直达，字幕库、SubHD、伪射手
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
