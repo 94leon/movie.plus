@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        200711
+// @version        200911
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -57,7 +57,7 @@ function parseURL(url) {
   };
 }
 
-function update_bt_site(title) {
+function update_bt_site(title, douban_ID) {
   let name, sites;
   title = encodeURI(title);
 
@@ -65,6 +65,7 @@ function update_bt_site(title) {
     //bt
     'BTDig': 'http://www.btdig.com/search?q=' + title + '+1080p',
     'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
+    'subDH': 'https://subdh.com/d/' + douban_ID,
   }
 
   for (name in sites) {
@@ -80,8 +81,8 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
 
   sites = {
     //sub
-    'SubHD': 'https://subhd.la/d/' + douban_ID,
-    '字幕库': 'http://www.zimuku.net/search?q=' + IMDb_ID,
+    'SubHD': 'https://subhd.tv/d/' + douban_ID,
+    '字幕库': 'http://www.zimuku.la/search?q=' + IMDb_ID,
     '伪射手': 'http://assrt.net/sub/?searchword=' + title,
   }
 
@@ -165,7 +166,7 @@ function get_other_title_en(other_title) {
     IMDb_ID = document.querySelector('#info a[href*="://www.imdb.com/"]');
     IMDb_ID = IMDb_ID ? (IMDb_ID.textContent || title_cn) : title_cn;
 
-    update_bt_site(bt_title + " " + year);
+    update_bt_site(bt_title + " " + year, douban_ID);
     update_sub_site(title_cn, douban_ID, IMDb_ID);
 
   });
