@@ -5,24 +5,23 @@
 
 ### 功能介绍
 * 找片神器，高清党福音
-* 独家功能：自动解析电影英文名（别问为什么要英文名），一键BT搜索，BTDigg/Torrentz2(这两个网站需要扶墙)
-* 新增SubDH资源一键直达，适合小白，不需扶墙
-* 一键字幕直达，字幕库/SubHD/伪射手
+* 独家功能：自动解析电影英文名（难道你不知道为什么要用英文？），BTDigg一键搜索（没有英文名则使用中文名）
+* RARBG、SubDH 一键直达
+* “低端影视”一键搜索
+* SubHD、字幕库、伪射手 一键直达
 
 
-![](https://i.ibb.co/gzNdHGQ/1602645592723.png)
-
-![](https://i.ibb.co/34xxG9F/image.png)
-
-![](https://i.ibb.co/9tg5LK7/image.png)
-
+![image.png](https://i.loli.net/2020/12/10/8xzK32E7fVsUTHw.png)
+![image.png](https://i.loli.net/2020/12/10/95ao83qrLQsNmjZ.png)
+![image.png](https://i.loli.net/2020/12/10/6laQONzicyZwq2v.png)
+![image.png](https://i.loli.net/2020/12/10/xZHjEVh5mCQ3Apt.png)
 
 ### 使用说明
 * 建议使用暴力猴Violentmonkey安装
 * 个别电影名称复杂或者有多个名称，解析的英文名可能不准确
+* BTDigg、RARBG需扶墙
+* 全网最好用，不接受反驳
 
-### 请我喝杯咖啡吧
+### 不请我喝杯咖啡？
 
-![](https://i.ibb.co/2j0qgt3/WeChatQR.jpg)
-
-* 欢迎同好聊聊电影，备注一下微信
+![别做伸手党](https://i.loli.net/2020/10/15/OLhUg4ZpGb9l2cK.png)
