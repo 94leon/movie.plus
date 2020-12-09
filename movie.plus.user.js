@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影 资源/字幕 一键搜索下载
-// @description    找片神器，高清党福音；独家功能：自动解析电影英文名，一键BT搜索，BTDigg/Torrentz2/SubDH；一键字幕直达，字幕库、SubHD、伪射手
+// @description    找片神器，高清党福音；独家功能：自动解析电影英文名，一键BT搜索，BTDigg/RARBG/SubDH/低端影视；一键字幕直达，字幕库、SubHD、伪射手
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        201014
+// @version        201209
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -60,15 +60,17 @@ function parseURL(url) {
   };
 }
 
-function update_bt_site(title, douban_ID) {
+function update_bt_site(title, douban_ID, IMDb_ID) {
   let name, sites;
   title = encodeURI(title);
 
   sites = {
     //bt
     'BTDig': 'http://www.btdig.com/search?q=' + title + '+1080p',
-    'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
+    'RARBG': 'https://rarbgprx.org/torrents.php?imdb=' + IMDb_ID,
     'subDH': 'https://subdh.com/d/' + douban_ID,
+    '低端影视': 'https://www.dogedoge.com/results?q=site%3Addrk.me ' + title,
+    // 'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
   }
 
   for (name in sites) {
@@ -192,7 +194,7 @@ function get_other_title_en(other_title) {
     IMDb_ID = document.querySelector('#info a[href*="://www.imdb.com/"]');
     IMDb_ID = IMDb_ID ? (IMDb_ID.textContent || title_cn) : title_cn;
 
-    update_bt_site(bt_title + " " + year, douban_ID);
+    update_bt_site(bt_title + " " + year, douban_ID, IMDb_ID);
     update_sub_site(title_cn, douban_ID, IMDb_ID);
 
   });
