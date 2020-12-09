@@ -119,7 +119,7 @@ function get_other_title_en(other_title) {
   return other_title_en
 }
 
-(() => {
+function main() {
   const seBwhA = document.createElement("a");
   seBwhA.id = "seBwhA";
   document.getElementsByTagName("html")[0].appendChild(seBwhA);
@@ -198,4 +198,6 @@ function get_other_title_en(other_title) {
     update_sub_site(title_cn, douban_ID, IMDb_ID);
 
   });
-})();
+}
+
+main()
