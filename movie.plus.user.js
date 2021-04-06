@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        210326
+// @version        210406
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -65,7 +65,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID) {
   title = encodeURI(title);
 
   sites = {
-    '低端影视': 'https://www.dogedoge.com/results?q=site%3Addrk.me ' + title + ' ' + year,
+    '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
     'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     'RARBG': 'https://rarbgprx.org/torrents.php?imdb=' + IMDb_ID,
     'subDH': 'https://subdh.com/d/' + douban_ID,
