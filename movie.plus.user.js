@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           豆瓣电影搜索下载在线观看·绿豆瓣 BT种子资源字幕 一键搜索下载 在线观看
-// @description    找片神器，高清党福音；自动解析电影英文名，BTDigg一键搜索；低端影视 一键直达，在线观看；RARBG、SubDH 一键直达；SubHD、字幕库、伪射手 一键直达；动漫站点 Nyaa、ACG.RIP 一键搜索
+// @description    找片神器，高清党福音；自动解析电影英文名，BTDigg一键搜索；低端影视 一键搜索，在线观看；RARBG、SubDH 一键直达；SubHD、字幕库、伪射手 一键直达；动漫站点 Nyaa、ACG.RIP 一键搜索
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
@@ -66,7 +66,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID) {
   title = title.trim();
   sites = {
     // '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
-    '低端影视': 'https://ddrk.me/' + title.replace(/ /g, "-"),
+    '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
     'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     'RARBG': 'https://rarbgprx.org/torrents.php?imdb=' + IMDb_ID,
     'subDH': 'https://subdh.com/d/' + douban_ID,
