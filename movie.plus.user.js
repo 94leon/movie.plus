@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        210408.2
+// @version        210421
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -88,7 +88,7 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
 
   sites = {
     'SubHD': 'https://subhd.tv/d/' + douban_ID,
-    '字幕库': 'http://www.zimuku.la/search?q=' + IMDb_ID,
+    '字幕库': 'http://zmk.pw//search?q=' + IMDb_ID,
     '伪射手': 'http://assrt.net/sub/?searchword=' + title,
   }
 
