@@ -1,15 +1,12 @@
 
 ### 豆瓣电影搜索下载在线观看·绿豆瓣 BT种子资源字幕 一键搜索下载 在线观看
-* [GitHub地址](https://github.com/94leon/movie.plus)
+* [Greasy Fork地址](https://greasyfork.org/zh-CN/scripts/401525)
 
 
 ### 功能介绍
-* 找片神器，高清党福音
-* 独家功能：自动解析电影英文名（没有英文名则使用中文名,别问为什么要用英文），BTDigg一键搜索
-* RARBG、SubDH 一键直达
-* 低端影视 一键搜索，在线观看
-* SubHD、字幕库、伪射手 一键直达
-* 动漫站点 Nyaa、ACG.RIP 一键搜索
+* 找片神器，高清党福音；
+* 自动解析电影名称(优先英文名,没有则使用中文)/豆瓣ID/IMDb ID；
+* BTDigg／低端影视／RARBG／WebHD／SubHD／字幕库／伪射手 一键直达
 
 ![image.png](https://i.loli.net/2020/12/10/8xzK32E7fVsUTHw.png)
 ![image.png](https://i.loli.net/2020/12/10/95ao83qrLQsNmjZ.png)

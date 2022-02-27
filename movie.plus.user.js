@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name           豆瓣电影搜索下载在线观看·绿豆瓣 BT种子资源字幕 一键搜索下载 在线观看
-// @description    找片神器，高清党福音；自动解析电影英文名，BTDigg一键搜索；低端影视 一键搜索，在线观看；RARBG、SubDH 一键直达；SubHD、字幕库、伪射手 一键直达；动漫站点 Nyaa、ACG.RIP 一键搜索
+// @name           绿豆瓣·豆瓣电影 BT／种子／资源／磁链／字幕 一键搜索下载 在线观看
+// @description    找片神器，高清党福音；自动解析电影名称(优先英文名,没有则使用中文)/豆瓣ID/IMDb ID；BTDigg／低端影视／RARBG／WebHD／SubHD／字幕库／伪射手 一键直达
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        210517
+// @version        220227
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -69,9 +69,9 @@ function update_bt_site(title, year, douban_ID, IMDb_ID) {
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
     'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
-    'subDH': 'https://subdh.com/d/' + douban_ID,
-    '动漫Nyaa': 'https://nyaa.si/?f=0&c=0_0&q=' + title,
-    'ACG.RIP': 'https://acg.rip/?term=' + title,
+    'WebHD': 'https://webhd.cc/d/' + douban_ID,
+    // '动漫Nyaa': 'https://nyaa.si/?f=0&c=0_0&q=' + title,
+    // 'ACG.RIP': 'https://acg.rip/?term=' + title,
     // 'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
   }
 
