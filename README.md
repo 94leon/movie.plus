@@ -5,8 +5,8 @@
 
 ### 功能介绍
 * 找片神器，高清党福音；
-* 自动解析电影名称(优先英文名,没有则使用中文)/豆瓣ID/IMDb ID；
-* BTDigg／低端影视／RARBG／WebHD／SubHD／字幕库／伪射手 一键直达
+* 自动解析电影名称/豆瓣ID/IMDb ID；
+* BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
 
 ![image.png](https://i.loli.net/2020/12/10/8xzK32E7fVsUTHw.png)
 ![image.png](https://i.loli.net/2020/12/10/95ao83qrLQsNmjZ.png)
@@ -17,7 +17,7 @@
 * 建议使用暴力猴Violentmonkey安装
 * 低端影视 画质优体验佳但资源不多，以热门影视为主
 * 低端影视 官方原先用的多吉搜索挂了，现在换成了百度，非常拉垮。我这边改成了Google，所以你懂的
-* BTDigg、Nyaa需扶墙
+* BTDigg需扶墙
 * 个别电影名称复杂或者有多个名称，解析的名称可能不准确（特别是日语动漫）
 * 觉得不好用是你的问题，不是我的问题
 * 只收录精品站点，欢迎推荐

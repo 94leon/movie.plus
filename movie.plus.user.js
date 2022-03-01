@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name           绿豆瓣·豆瓣电影 BT／种子／资源／磁链／字幕 一键搜索下载 在线观看
-// @description    找片神器，高清党福音；自动解析电影名称(优先英文名,没有则使用中文)/豆瓣ID/IMDb ID；BTDigg／低端影视／RARBG／WebHD／SubHD／字幕库／伪射手 一键直达
+// @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载 在线观看
+// @description    找片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
 // @author         94Léon
 // @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
@@ -60,7 +60,7 @@ function parseURL(url) {
   };
 }
 
-function update_bt_site(title, year, douban_ID, IMDb_ID) {
+function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   let name, sites;
   // title = encodeURI(title.trim());
   title = title.trim();
@@ -70,9 +70,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID) {
     'WebHD': 'https://webhd.cc/d/' + douban_ID,
     'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
-    // '动漫Nyaa': 'https://nyaa.si/?f=0&c=0_0&q=' + title,
-    // 'ACG.RIP': 'https://acg.rip/?term=' + title,
-    // 'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
+    '茶杯狐': 'https://www.cupfox.com/search?key=' + title_cn,
   }
 
   for (name in sites) {
@@ -181,7 +179,7 @@ function main() {
     info_text.split("\n").forEach(line => {
       let key_val = line.split(':')
       if (key_val.length === 2)
-        info_map[key_val[0]] = key_val[1]
+        info_map[key_val[0].trim()] = key_val[1].trim()
     })
     // console.log(info_map);
 
@@ -204,9 +202,9 @@ function main() {
 
     IMDb_ID = info_map["IMDb"];
     IMDb_ID = IMDb_ID ? IMDb_ID : title_cn;
-    // console.log('IMDb_ID', IMDb_ID);
+    console.log('IMDb_ID', IMDb_ID);
 
-    update_bt_site(bt_title, year, douban_ID, IMDb_ID);
+    update_bt_site(bt_title, year, douban_ID, IMDb_ID, title_cn);
     update_sub_site(title_cn, douban_ID, IMDb_ID);
 
   });
