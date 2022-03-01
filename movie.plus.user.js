@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        220227
+// @version        220301
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -66,10 +66,10 @@ function update_bt_site(title, year, douban_ID, IMDb_ID) {
   title = title.trim();
   sites = {
     // '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
-    '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
-    'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
     'WebHD': 'https://webhd.cc/d/' + douban_ID,
+    'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
+    '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
     // '动漫Nyaa': 'https://nyaa.si/?f=0&c=0_0&q=' + title,
     // 'ACG.RIP': 'https://acg.rip/?term=' + title,
     // 'Torrentz2': 'https://torrentz2.is/searchS?f=' + title + '+1080p',
@@ -175,10 +175,18 @@ function main() {
       title_en = ''
     }
 
+    //解析info内容
+    let info_text = $('#info')[0].innerText, info_map = {}
+    // console.log(info_text);
+    info_text.split("\n").forEach(line => {
+      let key_val = line.split(':')
+      if (key_val.length === 2)
+        info_map[key_val[0]] = key_val[1]
+    })
+    // console.log(info_map);
+
     //匹配备用英文名——————————————
-    let info_div = $('#info').html()
-    title_en_sub = info_div.split("又名:</span>")[1];
-    title_en_sub = title_en_sub ? title_en_sub.split("<br>")[0] : '';
+    title_en_sub = info_map["又名"];
     title_en_sub = title_en_sub ? get_other_title_en(title_en_sub) : '';
 
     bt_title = title_en || title_en_sub || title_cn;
@@ -193,11 +201,10 @@ function main() {
     year = h1_span[1].textContent.substr(1, 4);
 
     douban_ID = location.href.split('\/')[4] || title_cn;
-    // IMDb_ID = document.querySelector('#info a[href*="://www.imdb.com/"]');
-    IMDb_ID = info_div.split("IMDb:</span>")[1];
-    IMDb_ID = IMDb_ID ? IMDb_ID.split("<br>")[0].trim() : '';
-    // IMDb_ID = IMDb_ID ? (IMDb_ID.textContent || title_cn) : title_cn;
-    // console.log(IMDb_ID);
+
+    IMDb_ID = info_map["IMDb"];
+    IMDb_ID = IMDb_ID ? IMDb_ID : title_cn;
+    // console.log('IMDb_ID', IMDb_ID);
 
     update_bt_site(bt_title, year, douban_ID, IMDb_ID);
     update_sub_site(title_cn, douban_ID, IMDb_ID);
