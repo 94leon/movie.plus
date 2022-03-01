@@ -70,7 +70,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
     'WebHD': 'https://webhd.cc/d/' + douban_ID,
     'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
-    '茶杯狐': 'https://www.cupfox.com/search?key=' + title_cn,
+    '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
   }
 
   for (name in sites) {
