@@ -19,10 +19,11 @@ document.getElementsByTagName("head")[0].appendChild(myScriptStyle);
 const aside_html = '<div class=c-aside > <h2><i class="">四字标题</i>· · · · · · </h2> <div class=c-aside-body  style="padding: 0 12px;"> <ul class=bs > </ul> </div> </div>';
 
 
-const en_total_reg = /^[a-zA-Z\d\s-:·,/`~!@#$%^&*()_+<>?"{}.;'[\]]+$/;
-const en_end_reg = /\s[a-zA-Z\d\s-:·,/`~!@#$%^&*()_+<>?"{}.;'[\]]+$/;
-const cn_start_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.;'[\]！￥（—）；“”‘、|《。》？【】]+/;
-const cn_total_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.;'[\]！￥（—）；“”‘、|《。》？【】]+$/;
+const en_total_reg = /^[a-zA-Z\d\s-:·,/`~!@#$%^&*()_+<>?"{}.…;'[\]]+$/;
+const en_end_reg = /\s[a-zA-Z\d\s-:·,/`~!@#$%^&*()_+<>?"{}.…;'[\]]+$/;
+const cn_start_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.…;'[\]！￥（—）；“”‘、|《。》？【】]+/;
+const cn_total_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.…;'[\]！￥（—）；“”‘、|《。》？【】]+$/;
+const symbol_delete_reg = /[-：:·,，/`~!@#$%^&*()_+<>?"{}.…;[\]！￥（—）；“”‘、|《。》？【】]/g;
 
 function parseURL(url) {
   let a;
@@ -67,10 +68,11 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   sites = {
     // '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
     'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
-    'WebHD': 'https://webhd.cc/d/' + douban_ID,
-    'BTDigg': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
+    'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
+    'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
     '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
+    'WebHD': 'https://webhd.cc/d/' + douban_ID,
   }
 
   for (name in sites) {
@@ -85,8 +87,8 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
   title = encodeURI(title);
 
   sites = {
-    'SubHD': 'https://subhd.tv/d/' + douban_ID,
     '字幕库': 'http://zmk.pw//search?q=' + IMDb_ID,
+    'SubHD': 'https://subhd.tv/d/' + douban_ID,
     '伪射手': 'http://assrt.net/sub/?searchword=' + title,
   }
 
@@ -188,6 +190,8 @@ function main() {
     title_en_sub = title_en_sub ? get_other_title_en(title_en_sub) : '';
 
     bt_title = title_en || title_en_sub || title_cn;
+    //规范的命名只保留英文字母
+    bt_title = bt_title.replaceAll(symbol_delete_reg, ' ').replace('\'', '').replace(/\s+/g, ' ').trim();
 
     // console.log('title_all:' + title_all);
     // console.log('title_en:' + title_en);
