@@ -10,7 +10,7 @@
 // @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
 // @match          https://movie.douban.com/subject/*
-// @version        220302
+// @version        220309
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -177,9 +177,9 @@ function main() {
     let info_text = $('#info')[0].innerText, info_map = {}
     // console.log(info_text);
     info_text.split("\n").forEach(line => {
-      let key_val = line.split(':')
-      if (key_val.length === 2)
-        info_map[key_val[0].trim()] = key_val[1].trim()
+      let index = line.indexOf(":")
+      if (index > 0)
+        info_map[line.slice(0, index).trim()] = line.slice(index + 1).trim()
     })
     // console.log(info_map);
 
@@ -202,7 +202,7 @@ function main() {
 
     IMDb_ID = info_map["IMDb"];
     IMDb_ID = IMDb_ID ? IMDb_ID : title_cn;
-    console.log('IMDb_ID', IMDb_ID);
+    // console.log('IMDb_ID', IMDb_ID);
 
     update_bt_site(bt_title, year, douban_ID, IMDb_ID, title_cn);
     update_sub_site(title_cn, douban_ID, IMDb_ID);
