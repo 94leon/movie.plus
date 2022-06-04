@@ -67,7 +67,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   title = title.trim();
   sites = {
     // '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
-    'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
+    'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID + '&order=size&by=DESC',
     'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
