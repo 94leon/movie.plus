@@ -1,16 +1,12 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载 在线观看
-// @description    找片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
+// @description    搜片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
 // @author         94Léon
-// @grant          GM_xmlhttpRequest
 // @grant          GM_setClipboard
-// @grant          GM_addStyle
-// @grant          GM_setValue
-// @grant          GM_getValue
-// @require        https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
-// @require        https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js
-// @match          https://movie.douban.com/subject/*
-// @version        220405
+// @match          http*://movie.douban.com/subject/*
+// @exclude        http*://movie.douban.com/subject/*/episode/*
+// @exclude        http*://movie.douban.com/subject/*/discussion/*
+// @version        220624
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -66,14 +62,20 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   // title = encodeURI(title.trim());
   title = title.trim();
   sites = {
-    // '低端影视': 'https://www.baidu.com/s?wd=site%3Addrk.me ' + title + ' ' + year,
     'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
-    'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + '+1080p',
+    'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + ' 1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
     '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
     '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
     'WebHD': 'https://webhd.cc/d/' + douban_ID,
   }
+
+
+  if (is_series(title))
+    sites['BTDigg.EN'] = 'https://www.btdig.com/search?q=' + title + ' 1080p'
+  if (not_series_01(title))
+    sites['RARBG'] = 'https://proxyrarbg.org/torrents.php?search=' + title
+
 
   for (name in sites) {
     let link = parse_sites(name, sites)
@@ -87,20 +89,30 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
   title = encodeURI(title);
 
   sites = {
-    '字幕库': 'https://zimuku.org/search?q=' + IMDb_ID,
     'SubHD': 'https://subhd.tv/d/' + douban_ID,
+    // '字幕库': 'https://zimuku.org/search?q=' + IMDb_ID,
+    '字幕库': 'https://zimuku.org',
     '伪射手': 'https://assrt.net/sub/?searchword=' + title,
   }
 
   for (name in sites) {
     let link = parse_sites(name, sites)
+
+    //网站限制无法直接跳转，自动复制IMDb_ID到剪贴板，手动粘贴搜索
+    if (name === "字幕库") {
+      link.on('click', function () {
+        GM_setClipboard(IMDb_ID)
+      });
+    }
+
     $('#content div.site-sub-body ul').append(link);
   }
 }
 
 function parse_sites(name, sites) {
   let link = sites[name], link_parsed = parseURL(link);
-  link = $('<a></a>').attr('href', link);
+  let aTag = $('<a></a>')
+  link = aTag.attr('href', link);
   link.attr('data-host', link_parsed.host);
   link.attr('target', '_blank').attr('rel', 'nofollow');
   link.html(name);
@@ -118,6 +130,22 @@ function get_other_title_en(other_title) {
     }
   });
   return other_title_en
+}
+
+function is_series(name) {
+  return /S\d+$/.test(name);
+}
+
+function not_series_01(name) {
+  return /S\d+$/.test(name) & !name.endsWith('S01');
+}
+
+function format_series_name(name) {
+  if (!/\sSeason\s\d+$/.test(name))
+    return name
+  let name_arr = name.split("Season")
+  let series_id = name_arr.slice(-1)[0].trim().padStart(2, '0')
+  return name_arr[0] + "S" + series_id
 }
 
 function main() {
@@ -192,6 +220,10 @@ function main() {
     bt_title = title_en || title_en_sub || title_cn;
     //规范的命名只保留英文字母
     bt_title = bt_title.replaceAll(symbol_delete_reg, ' ').replace('\'', '').replace(/\s+/g, ' ').trim();
+    bt_title = format_series_name(bt_title)
+
+    // title_en = title_en ? title_en[0] : '';
+
 
     // console.log('title_all:' + title_all);
     // console.log('title_en:' + title_en);
