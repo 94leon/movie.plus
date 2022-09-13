@@ -8,7 +8,7 @@
 // @exclude        http*://movie.douban.com/subject/*/discussion/*
 // @exclude        http*://movie.douban.com/subject/*/reviews*
 // @exclude        http*://movie.douban.com/subject/*/comments*
-// @version        220818
+// @version        220913
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -67,7 +67,8 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
     'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
     'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + ' 1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
-    '低端影视': 'https://www.google.com/search?q=site%3Addrk.me ' + title + ' ' + year,
+    // '低端影视': 'https://www.google.com/search?q=site%3Addys.tv ' + title + ' ' + year,
+    '低端影视': 'https://ddys.tv/?s=' + douban_ID,
     '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
     'WebHD': 'https://webhd.cc/d/' + douban_ID,
   }
