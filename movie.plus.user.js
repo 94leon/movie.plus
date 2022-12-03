@@ -99,12 +99,12 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
   for (name in sites) {
     let link = parse_sites(name, sites)
 
-    //网站限制无法直接跳转，自动复制IMDb_ID到剪贴板，手动粘贴搜索
-    if (name === "字幕库") {
-      link.on('click', function () {
-        GM_setClipboard(IMDb_ID)
-      });
-    }
+    // //网站限制无法直接跳转，自动复制IMDb_ID到剪贴板，手动粘贴搜索
+    // if (name === "字幕库") {
+    //   link.on('click', function () {
+    //     GM_setClipboard(IMDb_ID)
+    //   });
+    // }
 
     $('#content div.site-sub-body ul').append(link);
   }
