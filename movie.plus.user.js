@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载 在线观看
+// @namespace      https://github.com/94leon/movie.plus
 // @description    搜片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
 // @author         94Léon
 // @grant          GM_setClipboard
-// @match          http*://movie.douban.com/subject/*
-// @exclude        http*://movie.douban.com/subject/*/episode/*
-// @exclude        http*://movie.douban.com/subject/*/discussion/*
-// @exclude        http*://movie.douban.com/subject/*/reviews*
-// @exclude        http*://movie.douban.com/subject/*/comments*
-// @version        220913
+// @match          http*://movie.douban.com/subject/*/
+// @match          http*://movie.douban.com/subject/*/?from=*
+// @exclude-match  http*://movie.douban.com/subject/*/*/
+// @version        221203
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -94,7 +93,6 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
   sites = {
     'SubHD': 'https://subhd.tv/d/' + douban_ID,
     '字幕库': 'https://so.zimuku.org/search?q=' + IMDb_ID,
-    // '字幕库': 'https://zmk.pw/',
     '伪射手': 'https://assrt.net/sub/?searchword=' + title,
   }
 
