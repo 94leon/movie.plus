@@ -63,7 +63,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   // title = encodeURI(title.trim());
   title = title.trim();
   sites = {
-    'TorrentGalaxy': 'https://tgx.rs/torrents.php?search=' + IMDb_ID,
+    'TorrentGalaxy': 'https://tgx.rs/torrents.php?sort=size&order=desc&search=' + IMDb_ID,
     'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + ' 1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
     // '低端影视': 'https://www.google.com/search?q=site%3Addys.tv ' + title + ' ' + year,
@@ -76,7 +76,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   if (is_series(title))
     sites['BTDigg.EN'] = 'https://www.btdig.com/search?q=' + title + ' 1080p'
   if (not_series_01(title))
-    sites['TorrentGalaxy'] = 'https://tgx.rs/torrents.php?search=' + title
+    sites['TorrentGalaxy'] = 'https://tgx.rs/torrents.php?sort=size&order=desc&search=' + title
 
 
   for (name in sites) {
