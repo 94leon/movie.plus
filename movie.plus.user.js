@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载 在线观看
 // @namespace      https://github.com/94leon/movie.plus
-// @description    搜片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/RARBG/WebHD/SubHD/字幕库/伪射手 一键直达
+// @description    搜片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/低端影视/茶杯狐/TorrentGalaxy/WebHD/SubHD/字幕库/伪射手 一键直达
 // @author         94Léon
 // @grant          GM_setClipboard
 // @match          http*://movie.douban.com/subject/*/
@@ -63,7 +63,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   // title = encodeURI(title.trim());
   title = title.trim();
   sites = {
-    'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
+    'TorrentGalaxy': 'https://tgx.rs/torrents.php?search=' + IMDb_ID,
     'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + ' 1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
     // '低端影视': 'https://www.google.com/search?q=site%3Addys.tv ' + title + ' ' + year,
@@ -76,7 +76,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
   if (is_series(title))
     sites['BTDigg.EN'] = 'https://www.btdig.com/search?q=' + title + ' 1080p'
   if (not_series_01(title))
-    sites['RARBG'] = 'https://proxyrarbg.org/torrents.php?search=' + title
+    sites['TorrentGalaxy'] = 'https://tgx.rs/torrents.php?search=' + title
 
 
   for (name in sites) {
