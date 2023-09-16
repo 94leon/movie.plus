@@ -66,8 +66,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
     // 'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
     'BTDigg.EN': 'https://www.btdig.com/search?q=' + title + ' ' + year + ' 1080p',
     'BTDigg.中': 'https://www.btdig.com/search?q=' + title_cn,
-    // '低端影视': 'https://www.google.com/search?q=site%3Addys.tv ' + title + ' ' + year,
-    '低端影视': 'https://ddys.tv/?s=' + douban_ID,
+    '低端影视': 'https://ddys.pro/?s=' + douban_ID,
     '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
     'WebHD': 'https://webhd.top/d/' + douban_ID,
   }
