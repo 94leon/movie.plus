@@ -69,6 +69,7 @@ function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
     '低端影视': 'https://ddys.pro/?s=' + douban_ID,
     '茶杯狐': 'https://cupfox.app/search?key=' + title_cn,
     'WebHD': 'https://webhd.top/d/' + douban_ID,
+    '懒鱼看看': 'https://lykk.top/api/go?doubanId=' + douban_ID,
   }
 
 
