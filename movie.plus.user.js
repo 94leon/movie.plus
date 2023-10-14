@@ -7,7 +7,7 @@
 // @match          http*://movie.douban.com/subject/*/
 // @match          http*://movie.douban.com/subject/*/?from=*
 // @exclude-match  http*://movie.douban.com/subject/*/*/
-// @version        230917
+// @version        231014
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
@@ -91,7 +91,7 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
 
   sites = {
     'SubHD': 'https://subhd.tv/d/' + douban_ID,
-    '字幕库': 'https://so.zimuku.org/search?q=' + IMDb_ID,
+    '字幕库': 'https://zimuku.org/search?q=' + IMDb_ID,
     '伪射手': 'https://assrt.net/sub/?searchword=' + title,
   }
 
