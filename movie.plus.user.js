@@ -7,7 +7,7 @@
 // @match          http*://movie.douban.com/subject/*/
 // @match          http*://movie.douban.com/subject/*/?from=*
 // @exclude-match  http*://movie.douban.com/subject/*/*/
-// @version        231014
+// @version        231017
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
