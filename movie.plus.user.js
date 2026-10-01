@@ -63,17 +63,17 @@ function btdig_url(query) {
     return 'https://www.btdig.com/search?q=' + encodeURIComponent(query).replace(/%20/g, '+')
 }
 
-// 站点 URL 统一在这里构造：片名整体编码，空格转 +（btdig 查询串不认 %20）
+// 站点 URL 统一在这里构造：片名整体编码，空格转 +（btdig 查询串不认 %20）；名称缺失时返回 null 置灰
 function build_bt_sites(title, year, title_cn) {
     title = title.trim()
-    let query = title + (year ? ' ' + year : '') + ' 1080p'
+    title_cn = title_cn.trim()
     let sites = {
         // 'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
-        'BTDigg EN': btdig_url(query),
-        'BTDigg 中': btdig_url(title_cn.trim())
+        'BTDigg EN': title ? btdig_url(title + (year ? ' ' + year : '') + ' 1080p') : null,
+        'BTDigg 中': title_cn ? btdig_url(title_cn) : null
     }
 
-    if (is_series(title))
+    if (title && is_series(title))
         sites['BTDigg EN'] = btdig_url(title + ' 1080p')
     // if (not_series_01(title))
     //   sites['RARBG'] = 'https://proxyrarbg.org/torrents.php?search=' + title
