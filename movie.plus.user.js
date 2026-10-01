@@ -5,13 +5,12 @@
 // @author         94Léon
 // @grant          GM_setClipboard
 // @match          http*://movie.douban.com/subject/*/
-// @match          http*://movie.douban.com/subject/*/?from=*
 // @exclude-match  http*://movie.douban.com/subject/*/*/
-// @version        261002.1
+// @version        261002.2
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
-myScriptStyle.innerHTML = "@charset utf-8;.c-aside {margin-bottom: 30px}  .c-aside-body {*letter-spacing: normal}  .c-aside-body a {border-radius: 6px;color: #37A;display: inline-block;letter-spacing: normal;margin: 0 8px 8px 0;padding: 0 8px;text-align: center;width: 65px}  .c-aside-body a:link, .c-aside-body a:visited {background-color: #f5f5f5;color: #37A}  .c-aside-body a:hover, .c-aside-body a:active {background-color: #e8e8e8;color: #37A}  .c-aside-body a.disabled {text-decoration: line-through}  .c-aside-body a.available {background-color: #5ccccc;color: #006363}  .c-aside-body a.available:hover, .c-aside-body a.available:active {background-color: #3cc}  .c-aside-body a.honse {background-color: #fff0f5;color: #006363}  .c-aside-body a.honse:hover, .c-aside-body a.honse:active {background-color: #3cc}  .c-aside-body a.sites_r0 {text-decoration: line-through}";
+myScriptStyle.innerHTML = "@charset utf-8;.c-aside {margin-bottom: 30px}  .c-aside-body {*letter-spacing: normal}  .c-aside-body a {border-radius: 6px;color: #37A;display: inline-block;letter-spacing: normal;margin: 0 8px 8px 0;padding: 0 8px;text-align: center;width: 65px}  .c-aside-body a:link, .c-aside-body a:visited {background-color: #f5f5f5;color: #37A}  .c-aside-body a:hover, .c-aside-body a:active {background-color: #e8e8e8;color: #37A}  .c-aside-body a.disabled {text-decoration: line-through}";
 document.getElementsByTagName("head")[0].appendChild(myScriptStyle);
 const aside_html = '<div class=c-aside > <h2><i class="">四字标题</i>· · · · · · </h2> <div class=c-aside-body  style="padding: 0 12px;"> <ul class=bs > </ul> </div> </div>';
 
@@ -21,42 +20,6 @@ const en_end_reg = /\s[a-zA-Z\d\s-:·,/`~!@#$%^&*()_+<>?"{}.…;'[\]]+$/;
 const cn_start_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.…;'[\]！￥（—）；“”‘、|《。》？【】]+/;
 const cn_total_reg = /^[\u4e00-\u9fa5a-zA-Z\d\s-：:·,，/`~!@#$%^&*()_+<>?"{}.…;'[\]！￥（—）；“”‘、|《。》？【】]+$/;
 const symbol_delete_reg = /[-：:·,，/`~!@#$%^&*()_+<>?"{}.…;[\]！￥（—）；“”‘、|《。》？【】]/g;
-
-function parseURL(url) {
-    let a;
-    a = document.createElement('a');
-    a.href = url;
-    return {
-        source: url,
-        protocol: a.protocol.replace(':', ''),
-        host: a.hostname,
-        port: a.port,
-        query: a.search,
-        params: (function () {
-            let i, len, ret, s, seg;
-            ret = {};
-            seg = a.search.replace(/^\?/, '').split('&');
-            len = seg.length;
-            i = 0;
-            s = void 0;
-            while (i < len) {
-                if (!seg[i]) {
-                    i++;
-                    continue;
-                }
-                s = seg[i].split('=');
-                ret[s[0]] = s[1];
-                i++;
-            }
-            return ret;
-        })(),
-        file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
-        hash: a.hash.replace('#', ''),
-        path: a.pathname.replace(/^([^\/])/, '/$1'),
-        relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
-        segments: a.pathname.replace(/^\//, '').split('/')
-    };
-}
 
 // btdig 查询串只认 + 作为空格，%20 会命中后端默认页；整体编码以处理片名中的 & 等字符
 function btdig_url(query) {
@@ -68,15 +31,12 @@ function build_bt_sites(title, year, title_cn) {
     title = title.trim()
     title_cn = title_cn.trim()
     let sites = {
-        // 'RARBG': 'https://proxyrarbg.org/torrents.php?imdb=' + IMDb_ID,
         'BTDigg EN': title ? btdig_url(title + (year ? ' ' + year : '') + ' 1080p') : null,
         'BTDigg 中': title_cn ? btdig_url(title_cn) : null
     }
 
     if (title && is_series(title))
         sites['BTDigg EN'] = btdig_url(title + ' 1080p')
-    // if (not_series_01(title))
-    //   sites['RARBG'] = 'https://proxyrarbg.org/torrents.php?search=' + title
 
     return sites
 }
@@ -106,14 +66,6 @@ function update_sub_site(title, douban_ID, IMDb_ID) {
 
     for (name in sites) {
         let link = parse_sites(name, sites)
-
-        // //网站限制无法直接跳转，自动复制IMDb_ID到剪贴板，手动粘贴搜索
-        // if (name === "字幕库") {
-        //   link.on('click', function () {
-        //     GM_setClipboard(IMDb_ID)
-        //   });
-        // }
-
         $('#content div.site-sub-body ul').append(link);
     }
 }
@@ -123,7 +75,6 @@ function parse_sites(name, sites) {
     let aTag = $('<a></a>').html(name);
     if (url) {
         aTag.attr('href', url);
-        aTag.attr('data-host', parseURL(url).host);
         aTag.attr('target', '_blank').attr('rel', 'nofollow');
     } else {
         // 无可用 URL（如缺 ID）时置灰，不生成可点击链接
@@ -149,10 +100,6 @@ function is_series(name) {
     return /S\d+$/.test(name);
 }
 
-function not_series_01(name) {
-    return /S\d+$/.test(name) & !name.endsWith('S01');
-}
-
 function format_series_name(name) {
     if (!/\sSeason\s\d+$/.test(name))
         return name
@@ -162,10 +109,6 @@ function format_series_name(name) {
 }
 
 function main() {
-    const seBwhA = document.createElement("a");
-    seBwhA.id = "seBwhA";
-    document.getElementsByTagName("html")[0].appendChild(seBwhA);
-
     $(document).ready(() => {
 
         let h1_span = $('#content > h1 > span');
@@ -206,7 +149,6 @@ function main() {
         }
 
         //检查名称——————————————
-        // console.log(title_all.length, (title_en + title_cn).length)
         if ((title_all.length !== (title_en + title_cn).length)) {
 
             title_cn = ""
@@ -229,7 +171,6 @@ function main() {
                     info_map[line.slice(0, index).trim()] = line.slice(index + 1).trim()
             })
         }
-        // console.log(info_map);
 
         //匹配备用英文名——————————————
         title_en_sub = info_map["又名"];
@@ -237,25 +178,14 @@ function main() {
 
         bt_title = title_en || title_en_sub || title_cn;
         //规范的命名只保留英文字母
-        bt_title = bt_title.replaceAll(symbol_delete_reg, ' ').replace('\'', '').replace(/\s+/g, ' ').trim();
+        bt_title = bt_title.replaceAll(symbol_delete_reg, ' ').replace(/\s+/g, ' ').trim();
         bt_title = format_series_name(bt_title)
 
-        // title_en = title_en ? title_en[0] : '';
-
-
-        // console.log('title_all:' + title_all);
-        // console.log('title_en:' + title_en);
-        // console.log('title_cn:' + title_cn);
-        // console.log('title_en_sub:' + title_en_sub);
-        // console.log('bt_title:' + bt_title);
-
-        // console.log(" h1_span[1].textContent", h1_span[1].textContent);
         year = h1_span[1] ? h1_span[1].textContent.substr(1, 4) : '';
 
         douban_ID = location.href.split('/')[4] || '';
 
         IMDb_ID = info_map["IMDb"] || '';
-        // console.log('IMDb_ID', IMDb_ID);
 
         update_bt_site(bt_title, year, douban_ID, IMDb_ID, title_cn);
         update_sub_site(title_cn, douban_ID, IMDb_ID);
