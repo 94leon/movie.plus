@@ -6,11 +6,11 @@
 // @grant          GM_setClipboard
 // @match          http*://movie.douban.com/subject/*/
 // @exclude-match  http*://movie.douban.com/subject/*/*/
-// @version        261002.3
+// @version        261002.4
 // ==/UserScript==
 
 const myScriptStyle = document.createElement("style");
-myScriptStyle.innerHTML = "@charset utf-8;.c-aside {margin-bottom: 30px}  .c-aside-body {*letter-spacing: normal}  .c-aside-body a {border-radius: 6px;color: #37A;display: inline-block;letter-spacing: normal;margin: 0 8px 8px 0;padding: 0 8px;text-align: center;min-width: 65px}  .c-aside-body a:link, .c-aside-body a:visited {background-color: #f5f5f5;color: #37A}  .c-aside-body a:hover, .c-aside-body a:active {background-color: #e8e8e8;color: #37A}  .c-aside-body a.disabled {text-decoration: line-through}";
+myScriptStyle.innerHTML = "@charset utf-8;.c-aside {margin-bottom: 30px}  .c-aside-body {*letter-spacing: normal}  .c-aside-body a {border-radius: 6px;color: #37A;display: inline-block;letter-spacing: normal;margin: 0 8px 8px 0;padding: 0 8px;text-align: center;min-width: 65px}  .c-aside-body a:link, .c-aside-body a:visited {background-color: #f5f5f5;color: #37A}  .c-aside-body a:hover, .c-aside-body a:active {background-color: #e8e8e8;color: #37A}  .c-aside-body a.disabled {text-decoration: line-through}  .c-aside h2 a.res-toggle {color: #666;background-color: #f5f5f5;border-radius: 4px;cursor: pointer;font-size: 12px;margin-left: 8px;padding: 2px 6px;transition: all .15s}  .c-aside h2 a.res-toggle:hover {color: #37A;background-color: #e8e8e8}";
 document.getElementsByTagName("head")[0].appendChild(myScriptStyle);
 const aside_html = '<div class=c-aside > <h2><i class="">四字标题</i>· · · · · · </h2> <div class=c-aside-body  style="padding: 0 12px;"> <ul class=bs > </ul> </div> </div>';
 
@@ -26,28 +26,43 @@ function btdig_url(query) {
     return 'https://www.btdig.com/search?q=' + encodeURIComponent(query).replace(/%20/g, '+')
 }
 
+// 默认清晰度偏好：存豆瓣域 localStorage；缺失/非法/不可用时一律按 1080p
+const RES_KEY = 'movieplus:res'
+const RES_OPTIONS = ['1080p', '2160p']
+
+function get_res_pref() {
+    let saved = ''
+    try { saved = localStorage.getItem(RES_KEY) } catch (e) { }
+    return RES_OPTIONS.includes(saved) ? saved : '1080p'
+}
+
+function toggle_res_pref() {
+    let next = get_res_pref() === '1080p' ? '2160p' : '1080p'
+    try { localStorage.setItem(RES_KEY, next) } catch (e) { }
+    return next
+}
+
 // 站点 URL 统一在这里构造：片名整体编码，空格转 +（btdig 查询串不认 %20）；名称缺失时返回 null 置灰
-function build_bt_sites(title, year, title_cn) {
+function build_bt_sites(title, year, title_cn, res) {
+    res = res || '1080p'
     title = title.trim()
     title_cn = title_cn.trim()
     let sites = {
-        'BTDigg EN': title ? btdig_url(title + (year ? ' ' + year : '') + ' 1080p') : null,
+        'BTDigg EN': title ? btdig_url(title + (year ? ' ' + year : '') + ' ' + res) : null,
         'BTDigg 中': title_cn ? btdig_url(title_cn) : null
     }
 
     if (title && is_series(title))
-        sites['BTDigg EN'] = btdig_url(title + ' 1080p')
+        sites['BTDigg EN'] = btdig_url(title + ' ' + res)
 
     return sites
 }
 
-function update_bt_site(title, year, douban_ID, IMDb_ID, title_cn) {
-    let name, sites = build_bt_sites(title, year, title_cn);
-
-    for (name in sites) {
-        let link = parse_sites(name, sites)
-        $('#content div.site-bt-body ul').append(link);
-    }
+function render_bt_links(title, year, title_cn) {
+    let sites = build_bt_sites(title, year, title_cn, get_res_pref())
+    let ul = $('#content div.site-bt-body ul').empty()
+    for (let name in sites)
+        ul.append(parse_sites(name, sites))
 }
 
 
@@ -187,8 +202,16 @@ function main() {
 
         IMDb_ID = info_map["IMDb"] || '';
 
-        update_bt_site(bt_title, year, douban_ID, IMDb_ID, title_cn);
+        render_bt_links(bt_title, year, title_cn);
         update_sub_site(title_cn, douban_ID, IMDb_ID);
+
+        // 标题行清晰度切换：翻转偏好后标签更新、BT 链接立即重建
+        let res_tag = $('<a class="res-toggle"></a>').text(get_res_pref()).attr('title', '切换默认清晰度');
+        site_bt.find('h2').append(res_tag);
+        res_tag.on('click', function () {
+            $(this).text(toggle_res_pref());
+            render_bt_links(bt_title, year, title_cn);
+        });
 
     });
 }

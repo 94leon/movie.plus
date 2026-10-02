@@ -10,10 +10,31 @@ function grab(name) {
   return m[0];
 }
 
+function grabConst(name) {
+  const m = src.match(new RegExp(`const ${name} = [^\\n]+`));
+  if (!m) throw new Error(`常量 ${name} 不存在于 movie.plus.user.js`);
+  return m[0];
+}
+
+// 为偏好函数注入 localStorage stub（node 环境没有；defineProperty 兼容有无内建 localStorage 的版本）
+function stubLocalStorage(store) {
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    value: {
+      getItem: k => (k in store ? store[k] : null),
+      setItem: (k, v) => { store[k] = String(v); },
+    },
+  });
+}
+
 let fns;
 try {
-  const code = ['btdig_url', 'is_series', 'build_bt_sites', 'build_sub_sites'].map(grab).join('\n');
-  fns = new Function(`${code}; return {btdig_url, build_bt_sites, build_sub_sites};`)();
+  const code = [
+    grabConst('RES_KEY'), grabConst('RES_OPTIONS'),
+    grab('btdig_url'), grab('is_series'), grab('build_bt_sites'), grab('build_sub_sites'),
+    grab('get_res_pref'), grab('toggle_res_pref'),
+  ].join('\n');
+  fns = new Function(`${code}; return {btdig_url, build_bt_sites, build_sub_sites, get_res_pref, toggle_res_pref};`)();
 } catch (e) {
   console.error(`FAIL: ${e.message}`);
   process.exit(1);
@@ -57,6 +78,22 @@ const cases = [
   // ID 格式不对（如 fallback 进来的中文片名）同样置灰
   [() => fns.build_sub_sites('肖申克的救赎', '肖申克的救赎', '肖申克的救赎')['SubHD'], null],
   [() => fns.build_sub_sites('肖申克的救赎', '肖申克的救赎', '肖申克的救赎')['字幕库'], null],
+
+  // ---- 清晰度偏好 ----
+  // 指定 2160p：电影与剧集分支的后缀都跟随
+  [() => fns.build_bt_sites('The Shawshank Redemption', '1994', '肖申克的救赎', '2160p')['BTDigg EN'],
+    'https://www.btdig.com/search?q=The+Shawshank+Redemption+1994+2160p'],
+  [() => fns.build_bt_sites('Fargo S02', '2015', '冰血暴', '2160p')['BTDigg EN'],
+    'https://www.btdig.com/search?q=Fargo+S02+2160p'],
+  // 空片名时无论什么清晰度都置灰，不生成废查询
+  [() => fns.build_bt_sites('', '1994', '肖申克的救赎', '2160p')['BTDigg EN'], null],
+  // 缺省/非法/合法存储值的读取行为
+  [() => { stubLocalStorage({}); return fns.get_res_pref(); }, '1080p'],
+  [() => { stubLocalStorage({ 'movieplus:res': '2160p' }); return fns.get_res_pref(); }, '2160p'],
+  [() => { stubLocalStorage({ 'movieplus:res': '4k' }); return fns.get_res_pref(); }, '1080p'],
+  // 切换：翻转返回值 + 写入存储；再切一次回到 1080p
+  [() => { const store = {}; stubLocalStorage(store); const now = fns.toggle_res_pref(); return `${now}/${store['movieplus:res']}`; }, '2160p/2160p'],
+  [() => { const store = { 'movieplus:res': '2160p' }; stubLocalStorage(store); return fns.toggle_res_pref(); }, '1080p'],
 ];
 
 let failed = 0;
