@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载 在线观看
+// @name           绿豆瓣·豆瓣电影 BT/种子/资源/磁链/字幕 一键搜索下载
 // @namespace      https://github.com/94leon/movie.plus
 // @description    搜片神器，高清党福音；自动解析电影名/豆瓣ID/IMDb ID；BTDigg/SubHD/字幕库/伪射手 一键直达
 // @author         94Léon
